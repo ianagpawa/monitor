@@ -1,0 +1,10 @@
+allData = {u'EIHAB - 27 Tiff IRA': {'date': [datetime.datetime(2017, 6, 2, 0, 0),
+                                   datetime.datetime(2017, 6, 3, 0, 0),
+                                   datetime.datetime(2017, 6, 9, 0, 0),
+                                   datetime.datetime(2017, 6, 10, 0, 0)],
+                          'therapist': u'Sangeetha Krishnan'},
+ u'EIHAB - 29 Tiff IRA': {'date': [datetime.datetime(2017, 6, 2, 0, 0),
+                                   datetime.datetime(2017, 6, 3, 0, 0),
+                                   datetime.datetime(2017, 6, 9, 0, 0),
+                                   datetime.datetime(2017, 6, 10, 0, 0)],
+                          'therapist': u'Sangeetha Krishnan'}}
