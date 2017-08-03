@@ -39,36 +39,26 @@ def get_values(document_name):
     print ("Done.")
 
 
-# Create new calander sheet
-def create_calendar(month):
-    wb = openpyxl.load_workbook("calendar.xlsx")
-    new_month_sheet = wb.create_sheet(title=month)
+def add_site(wb, sheet, site):
+    for i in range(3, 50):
+        cell = sheet.cell(row=i, column=1)
+        if cell.value:
+            if cell.value == site:
+                return i
+        else:
+            cell.value = site
+            wb.save('calendar.xlsx')
+            return i
 
-    first_cell = new_month_sheet.cell(row=1, column=1)
-    first_cell.value = month
+def get_initials(name):
+    names = name.split(" ")
+    return names[0][0] + " " + names[1][0]
 
-    for i in range(2, 33):
-        cell = new_month_sheet.cell(row=2, column=i)
-        cell.value = i - 1
-    wb.save('calendar.xlsx')
-
-# Add info from parsed invoice, single data obj, to calendar
 def add_to_calendar(obj):
     site = obj.keys()[0]
     dates = obj[site]['date']
     therapist = obj[site]['therapist']
-    # iterate through list
-    # get position from date
-    #
-    # Check if site is already on calender
-    # if so, find row
-    # if not, add to last row
-    #
-    # check therapist, and color code
-    #
-
-    # fill in cell with color code, and Initials
-    # if cell already filled, add only initials
+    initials = get_initials(therapist)
 
     wb = openpyxl.load_workbook("calendar.xlsx")
 
@@ -76,7 +66,16 @@ def add_to_calendar(obj):
     for da in dates:
         sheet_names = wb.sheetnames
         month = da.strftime("%B")
-        day = da.strftime("%d")\
+        day = int(da.strftime("%d"))
 
         if month not in sheet_names:
             create_calendar(month)
+
+        current_sheet = wb[month]
+        current_row = add_site(wb, current_sheet, site)
+        cell = current_sheet.cell(row=current_row, column=day+1)
+        if cell.value:
+            cell.value += " and " + initials
+        else:
+            cell.value = initials
+        wb.save('calendar.xlsx')
