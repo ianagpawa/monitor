@@ -6,6 +6,7 @@ import datetime
 def find_start(document_name):
     wb = openpyxl.load_workbook(document_name)
     sheet = wb.get_sheet_by_name('Sheet1')
+    print 'Finding start row of invoices'
     for i in range(1, 100):
         location = 'A%s' % i
         cell = sheet[location]
@@ -14,6 +15,7 @@ def find_start(document_name):
             start = i
         if value == None and i > 2:
             last = i - 1
+            print "Finished getting start and last rows"
             return start, last
 
 # Get values from invoice
@@ -39,6 +41,23 @@ def get_values(document_name):
     print ("Done.")
 
 
+# Create new calander sheet
+def create_calendar(month):
+    wb = openpyxl.load_workbook("calendar.xlsx")
+    print 'Creating new sheet'
+    new_month_sheet = wb.create_sheet(title=month)
+
+    first_cell = new_month_sheet.cell(row=1, column=1)
+    first_cell.value = month
+
+    print "Creating days"
+    for i in range(2, 33):
+        cell = new_month_sheet.cell(row=2, column=i)
+        cell.value = i - 1
+    wb.save('calendar.xlsx')
+    print "Done.  Created new sheet for " + month
+
+# Add info from parsed invoice, single data obj, to calendar
 def add_site(wb, sheet, site):
     for i in range(3, 50):
         cell = sheet.cell(row=i, column=1)
@@ -46,6 +65,7 @@ def add_site(wb, sheet, site):
             if cell.value == site:
                 return i
         else:
+            print 'Adding site'
             cell.value = site
             wb.save('calendar.xlsx')
             return i
@@ -62,7 +82,7 @@ def add_to_calendar(obj):
 
     wb = openpyxl.load_workbook("calendar.xlsx")
 
-
+    error = []
     for da in dates:
         sheet_names = wb.sheetnames
         month = da.strftime("%B")
@@ -70,12 +90,20 @@ def add_to_calendar(obj):
 
         if month not in sheet_names:
             create_calendar(month)
+            wb = openpyxl.load_workbook("calendar.xlsx")
 
         current_sheet = wb[month]
         current_row = add_site(wb, current_sheet, site)
         cell = current_sheet.cell(row=current_row, column=day+1)
         if cell.value:
-            cell.value += " and " + initials
+            if initials in cell.value:
+                print 'ERROR: %s already submmited for %s %s at %s!' % (therapist, month, day, site)
+                error.append((therapist, month, day, site))
+            else:
+                cell.value += " and " + initials
         else:
             cell.value = initials
+        # if error:
+        #     return
         wb.save('calendar.xlsx')
+        print "Added to Calendar"

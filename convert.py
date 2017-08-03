@@ -1,6 +1,6 @@
 #   Reading Excel
 import openpyxl
-from helpers import get_values as get_values, find_start as find_start
+from helpers import get_values as get_values, find_start as find_start, add_to_calendar as add_to_calendar
 
 # Test data
 from test import allData as allData
@@ -9,8 +9,9 @@ from test import allData as allData
 # print find_start('Invoice 20170710 - OT.xlsx')
 keys = allData.keys()
 test_datum = allData[keys[0]]
-print test_datum
+testing = {keys[0]: test_datum}
 
+add_to_calendar(testing)
 
 #   Writing to Excel
 # write_wb = openpyxl.load_workbook('write.xlsx')
