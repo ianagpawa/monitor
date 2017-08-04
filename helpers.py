@@ -18,17 +18,30 @@ def find_start(document_name):
             print "Finished getting start and last rows"
             return start, last
 
+
+def check_name(document_name):
+    if 'SP' in document_name:
+        return 'SP'
+    elif 'OT' in document_name:
+        return ("B", "C","G")
+    elif 'Psy' in document_name:
+        return "Psy"
+    else:
+        return "ERROR - NO MODALITY IN NAME"
+
 # Get values from invoice
 def get_values(document_name):
     data = {}
+    date_c, site_c, therapist_c = check_name(document_name)
+
     wb = openpyxl.load_workbook(document_name)
     sheet = wb.get_sheet_by_name('Sheet1')
     start, last = find_start(document_name)
 
     for i in range(start, last):
-        date = sheet["B" + str(i)].value
-        site = sheet["C" + str(i)].value
-        therapist = sheet["G" + str(i)].value
+        date = sheet[date_c + str(i)].value
+        site = sheet[site_c + str(i)].value
+        therapist = sheet[therapist_c + str(i)].value
         if site in data:
             arr = data[site]["date"]
             if date not in arr:
