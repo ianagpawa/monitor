@@ -18,6 +18,12 @@ def find_start(document_name):
             print "Finished getting start and last rows"
             return start, last
 
+def get_invoice_number(document_name):
+    num = ''
+    for i in document_name:
+        if i.isdigit():
+            num += i
+    return num[2:]
 
 def check_name(document_name):
     if 'SP' in document_name:
@@ -46,10 +52,11 @@ def get_values(document_name):
                 arr.append(date)
         else:
             data[site] = {"therapist": therapist, "date": [date]}
-    results = open('test.py', 'w')
-    results.write('allData = ' + pprint.pformat(data))
-    results.close()
-    print ("Done.")
+    return data
+    # results = open('test.py', 'w')
+    # results.write('allData = ' + pprint.pformat(data))
+    # results.close()
+    # print ("Done.")
 
 
 # Create new calander sheet
@@ -76,19 +83,18 @@ def add_site(wb, sheet, site):
             if cell.value == site:
                 return i
         else:
-            print 'Adding site'
             cell.value = site
+            print 'Adding %s to %s' % (site, sheet.title)
             wb.save('calendar.xlsx')
             return i
 
 def get_initials(name):
     names = name.split(" ")
-    return names[0][0] + " " + names[1][0]
+    return names[0][0] + names[1][0]
 
-def add_to_calendar(obj):
-    site = obj.keys()[0]
-    dates = obj[site]['date']
-    therapist = obj[site]['therapist']
+def add_to_calendar(site, obj, invoice_num):
+    dates = obj['date']
+    therapist = obj['therapist']
     initials = get_initials(therapist)
 
     wb = openpyxl.load_workbook("calendar.xlsx")
@@ -111,10 +117,20 @@ def add_to_calendar(obj):
                 print 'ERROR: %s already submmited for %s %s at %s!' % (therapist, month, day, site)
                 error.append((therapist, month, day, site))
             else:
-                cell.value += " and " + initials
+                cell.value += " and " + ("%s-%s" % (invoice_num, initials))
         else:
-            cell.value = initials
+            cell.value = "%s-%s" % (invoice_num, initials)
         # if error:
         #     return
         wb.save('calendar.xlsx')
-        print "Added to Calendar"
+        print "Added %s %s" % (da.strftime("%B %d"), initials)
+
+
+def add_invoice(document_name):
+    invoice_num = get_invoice_number(document_name)
+    invoice_data = get_values(document_name)
+    sites = invoice_data.keys()
+    for site in sites:
+        site_obj = invoice_data[site]
+        add_to_calendar(site, site_obj, invoice_num)
+    print "Finished with %s" % invoice_num
