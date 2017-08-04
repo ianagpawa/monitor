@@ -5,13 +5,13 @@ from helpers import get_values as get_values, find_start as find_start, add_to_c
 # Test data
 # from test import allData as allData
 
-# get_values('Invoice 20170710 - OT.xlsx')
+get_values('Invoice 20170710 - OT.xlsx')
 # print find_start('Invoice 20170710 - OT.xlsx')
-keys = allData.keys()
-test_datum = allData[keys[0]]
-testing = {keys[0]: test_datum}
-
-add_to_calendar(testing)
+# keys = allData.keys()
+# test_datum = allData[keys[0]]
+# testing = {keys[0]: test_datum}
+#
+# add_to_calendar(testing)
 
 #   Writing to Excel
 # write_wb = openpyxl.load_workbook('write.xlsx')
