@@ -7,10 +7,10 @@ from test import allData as allData
 
 # get_values('Invoice 20170710 - OT.xlsx')
 # print find_start('Invoice 20170710 - OT.xlsx')
-num = get_invoice_number('Invoice 20170710 - OT.xlsx')
-keys = allData.keys()
-test_datum = allData[keys[0]]
-testing = {keys[0]: test_datum}
+# num = get_invoice_number('Invoice 20170710 - OT.xlsx')
+# keys = allData.keys()
+# test_datum = allData[keys[0]]
+# testing = {keys[0]: test_datum}
 
 
 # add_to_calendar(keys[0], testing, num)

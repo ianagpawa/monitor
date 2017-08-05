@@ -1,4 +1,5 @@
 import openpyxl
+from openpyxl.styles import PatternFill, Font
 import pprint
 import datetime
 
@@ -65,6 +66,7 @@ def create_calendar(month):
     print 'Creating new sheet'
     new_month_sheet = wb.create_sheet(title=month)
 
+
     first_cell = new_month_sheet.cell(row=1, column=1)
     first_cell.value = month
 
@@ -92,10 +94,18 @@ def get_initials(name):
     names = name.split(" ")
     return names[0][0] + names[1][0]
 
+therapist_colors = {
+    "SK": "FFFF19",
+    "IM": "FFFF19",
+    "IR": "FFFF19"
+}
+
 def add_to_calendar(site, obj, invoice_num):
     dates = obj['date']
     therapist = obj['therapist']
     initials = get_initials(therapist)
+    # color_fill = PatternFill(bgColor = therapist_colors[initials], fill_type = 'solid')
+    color_fill = PatternFill(start_color= therapist_colors[initials], end_color= therapist_colors[initials], fill_type="solid")
 
     wb = openpyxl.load_workbook("calendar.xlsx")
 
@@ -118,8 +128,10 @@ def add_to_calendar(site, obj, invoice_num):
                 error.append((therapist, month, day, site))
             else:
                 cell.value += " and " + ("%s-%s" % (invoice_num, initials))
+
         else:
             cell.value = "%s-%s" % (invoice_num, initials)
+            cell.fill = color_fill
         # if error:
         #     return
         wb.save('calendar.xlsx')
@@ -134,3 +146,17 @@ def add_invoice(document_name):
         site_obj = invoice_data[site]
         add_to_calendar(site, site_obj, invoice_num)
     print "Finished with %s" % invoice_num
+#
+# def set_width(month):
+#     wb = openpyxl.load_workbook("calendar.xlsx")
+#
+#     new_month_sheet = wb.create_sheet(title=month)
+#     new_month.dimensions.ColumnDimension
+#     first_cell = new_month_sheet.cell(row=1, column=1)
+#     first_cell.value = month
+#
+#     print "Creating days"
+#     for i in range(2, 33):
+#         cell = new_month_sheet.cell(row=2, column=i)
+#         cell.value = i - 1
+#     wb.save('calendar.xlsx')
