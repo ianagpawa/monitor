@@ -65,6 +65,7 @@ def create_calendar(month):
     wb = openpyxl.load_workbook("calendar.xlsx")
     print 'Creating new sheet'
     new_month_sheet = wb.create_sheet(title=month)
+    new_month_sheet.page_setup.orientation = new_month_sheet.ORIENTATION_LANDSCAPE
 
 
     first_cell = new_month_sheet.cell(row=1, column=1)
@@ -73,6 +74,9 @@ def create_calendar(month):
     print "Creating days"
     for i in range(2, 33):
         cell = new_month_sheet.cell(row=2, column=i)
+        column = cell.column
+
+        new_month_sheet.column_dimensions[column].width = "10"
         cell.value = i - 1
     wb.save('calendar.xlsx')
     print "Done.  Created new sheet for " + month
@@ -85,6 +89,9 @@ def add_site(wb, sheet, site):
             if cell.value == site:
                 return i
         else:
+            row = sheet.row_dimensions[i]
+            row.height = "50"
+
             cell.value = site
             print 'Adding %s to %s' % (site, sheet.title)
             wb.save('calendar.xlsx')
@@ -105,7 +112,8 @@ def add_to_calendar(site, obj, invoice_num):
     therapist = obj['therapist']
     initials = get_initials(therapist)
     # color_fill = PatternFill(bgColor = therapist_colors[initials], fill_type = 'solid')
-    color_fill = PatternFill(start_color= therapist_colors[initials], end_color= therapist_colors[initials], fill_type="solid")
+    color = therapist_colors[initials]
+    color_fill = PatternFill(start_color= color, end_color= color, fill_type="solid")
 
     wb = openpyxl.load_workbook("calendar.xlsx")
 
@@ -126,8 +134,12 @@ def add_to_calendar(site, obj, invoice_num):
             if initials in cell.value:
                 print 'ERROR: %s already submmited for %s %s at %s!' % (therapist, month, day, site)
                 error.append((therapist, month, day, site))
+                return
+
             else:
                 cell.value += " and " + ("%s-%s" % (invoice_num, initials))
+                font = Font(color=color)
+                cell.font = font
 
         else:
             cell.value = "%s-%s" % (invoice_num, initials)
