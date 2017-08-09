@@ -1,6 +1,5 @@
 import openpyxl
 from openpyxl.styles import PatternFill, Font
-import pprint
 import datetime
 
 # Find start and end rows of invoice
@@ -8,7 +7,7 @@ def find_start(document_name):
     wb = openpyxl.load_workbook(document_name)
     sheet = wb.get_sheet_by_name('Sheet1')
     print 'Finding start row of invoices'
-    for i in range(1, 100):
+    for i in range(1, 125):
         location = 'A%s' % i
         cell = sheet[location]
         value = cell.internal_value
@@ -99,21 +98,34 @@ def add_site(wb, sheet, site):
 
 def get_initials(name):
     names = name.split(" ")
-    return names[0][0] + names[1][0]
+    finished = ''
+    for name in names:
+        finished += name[0]
+    return finished
 
 therapist_colors = {
-    "SK": "FFFF19",
-    "IM": "FFFF19",
-    "IR": "FFFF19"
+    "SK": "E7C80E",
+    "IM": "E7C80E",
+    "BR": "E7C80E",
+    "IR": "E7C80E",
+    "MJ": "004C00",
+    "GK": "004C00",
+    "DS": "004C00",
+    "DIO": "660000",
+    "TK": "660000",
+    "TP": "660000",
+    "WS": "660000",
+    "AV": "660000"
 }
 
 def add_to_calendar(site, obj, invoice_num):
     dates = obj['date']
     therapist = obj['therapist']
     initials = get_initials(therapist)
-    # color_fill = PatternFill(bgColor = therapist_colors[initials], fill_type = 'solid')
+
     color = therapist_colors[initials]
     color_fill = PatternFill(start_color= color, end_color= color, fill_type="solid")
+
 
     wb = openpyxl.load_workbook("calendar.xlsx")
 
@@ -140,10 +152,13 @@ def add_to_calendar(site, obj, invoice_num):
                 cell.value += " and " + ("%s-%s" % (invoice_num, initials))
                 font = Font(color=color)
                 cell.font = font
+                cell.font = Font(color=color)
 
         else:
             cell.value = "%s-%s" % (invoice_num, initials)
             cell.fill = color_fill
+
+
         # if error:
         #     return
         wb.save('calendar.xlsx')
