@@ -77,7 +77,7 @@ def create_calendar(month):
         cell = new_month_sheet.cell(row=2, column=i)
         column = cell.column
 
-        new_month_sheet.column_dimensions[column].width = "10"
+        new_month_sheet.column_dimensions[column].width = "15"
         cell.value = i - 1
     wb.save('calendar.xlsx')
     print "Done.  Created new sheet for " + month
@@ -91,7 +91,7 @@ def add_site(wb, sheet, site):
                 return i
         else:
             row = sheet.row_dimensions[i]
-            row.height = "50"
+            row.height = "60"
 
             cell.value = site
             print 'Adding %s to %s' % (site, sheet.title)
@@ -105,27 +105,31 @@ def get_initials(name):
         finished += name[0]
     return finished
 
-therapist_colors = {
-    "SK": "E7C80E",
-    "IM": "E7C80E",
-    "BR": "E7C80E",
-    "IR": "E7C80E",
-    "MJ": "004C00",
-    "GK": "004C00",
-    "DS": "004C00",
-    "DIO": "660000",
-    "TK": "660000",
-    "TP": "660000",
-    "WS": "660000",
-    "AV": "660000"
-}
+# therapist_colors = {
+#     "SK": "E7C80E",
+#     "IM": "E7C80E",
+#     "BR": "E7C80E",
+#     "IR": "E7C80E",
+#     "MJ": "004C00",
+#     "GK": "004C00",
+#     "DS": "004C00",
+#     "DIO": "660000",
+#     "TK": "660000",
+#     "TP": "660000",
+#     "WS": "660000",
+#     "AV": "660000"
+# }
 
-def add_to_calendar(site, obj, invoice_num):
+colors = {
+    "OT": "E7C80E",
+    "SP": "004C00",
+    "Psy": "660000"
+}
+def add_to_calendar(site, obj, invoice_num, color):
     dates = obj['date']
     therapist = obj['therapist']
     initials = get_initials(therapist)
 
-    color = therapist_colors[initials]
     color_fill = PatternFill(start_color= color, end_color= color, fill_type="solid")
 
 
@@ -168,10 +172,12 @@ def add_to_calendar(site, obj, invoice_num):
 
 
 def add_invoice(document_name):
+    modality = document_name[-7:-5]
+    color = colors[modality]
     invoice_num = get_invoice_number(document_name)
     invoice_data = get_values(document_name)
     sites = invoice_data.keys()
     for site in sites:
         site_obj = invoice_data[site]
-        add_to_calendar(site, site_obj, invoice_num)
+        add_to_calendar(site, site_obj, invoice_num, color)
     print "Finished with %s" % invoice_num
