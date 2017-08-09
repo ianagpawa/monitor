@@ -9,12 +9,14 @@ import os
 # import pkg_resources
 # print pkg_resources.get_distribution("openpyxl").version
 
-file_names = os.listdir("C:\Users\susi\Calendar\Invoices")
-for f in file_names:
-    if f != "Done" and f != "Not Done":
-        f_path = "C:\Users\susi\Calendar\Invoices\\" + f
-        add_invoice(f_path)
+def execute():
+    file_names = os.listdir("C:\Users\susi\Calendar\Invoices")
+    for f in file_names:
+        if f != "Done" and f != "Not Done":
+            f_path = "C:\Users\susi\Calendar\Invoices\\" + f
+            add_invoice(f_path)
 
+execute()
 # get_values('Invoice 20170710 - OT.xlsx')
 # print find_start('Invoice 20170710 - OT.xlsx')
 # num = get_invoice_number('Invoice 20170710 - OT.xlsx')
