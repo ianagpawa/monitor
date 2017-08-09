@@ -1,5 +1,6 @@
 import openpyxl
 from openpyxl.styles import PatternFill, Font
+from openpyxl.utils import get_column_letter
 import datetime
 
 # Find start and end rows of invoice
@@ -25,22 +26,23 @@ def get_invoice_number(document_name):
             num += i
     return num[2:]
 
-def check_name(document_name):
-    if 'SP' in document_name:
-        return "F"
-    elif 'OT' or 'Psy' in document_name:
-        return "G"
-    else:
-        return "ERROR - NO MODALITY IN NAME"
+def check_name(document_name, start):
+    wb = openpyxl.load_workbook(document_name)
+    sheet = wb.get_sheet_by_name('Sheet1')
+    for i in range(1,15):
+        cell = sheet.cell(row=start, column=i)
+        if 'Therapist' in cell.value:
+            return get_column_letter(i)
 
 # Get values from invoice
 def get_values(document_name):
     data = {}
-    therapist_c = check_name(document_name)
 
     wb = openpyxl.load_workbook(document_name)
     sheet = wb.get_sheet_by_name('Sheet1')
     start, last = find_start(document_name)
+
+    therapist_c = check_name(document_name, start-1)
 
     for i in range(start, last):
         date = sheet["B" + str(i)].value
@@ -173,17 +175,3 @@ def add_invoice(document_name):
         site_obj = invoice_data[site]
         add_to_calendar(site, site_obj, invoice_num)
     print "Finished with %s" % invoice_num
-#
-# def set_width(month):
-#     wb = openpyxl.load_workbook("calendar.xlsx")
-#
-#     new_month_sheet = wb.create_sheet(title=month)
-#     new_month.dimensions.ColumnDimension
-#     first_cell = new_month_sheet.cell(row=1, column=1)
-#     first_cell.value = month
-#
-#     print "Creating days"
-#     for i in range(2, 33):
-#         cell = new_month_sheet.cell(row=2, column=i)
-#         cell.value = i - 1
-#     wb.save('calendar.xlsx')
