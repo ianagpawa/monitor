@@ -20,13 +20,12 @@ def find_start(document_name):
             return start, last
 
 def get_invoice_number(document_name):
-    num = ''
-    for i in document_name:
-        if i.isdigit():
-            num += i
-    return num[2:]
+    words = document_name.split(" ")
+    return words[1]
+
 
 def check_name(document_name, start):
+    start -= 1
     wb = openpyxl.load_workbook(document_name)
     sheet = wb.get_sheet_by_name('Sheet1')
     for i in range(1,15):
@@ -34,7 +33,7 @@ def check_name(document_name, start):
         if 'Therapist' in cell.value:
             return get_column_letter(i)
 
-# Get values from invoice
+
 def get_values(document_name):
     data = {}
 
@@ -42,7 +41,7 @@ def get_values(document_name):
     sheet = wb.get_sheet_by_name('Sheet1')
     start, last = find_start(document_name)
 
-    therapist_c = check_name(document_name, start-1)
+    therapist_c = check_name(document_name, start)
 
     for i in range(start, last):
         date = sheet["B" + str(i)].value
