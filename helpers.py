@@ -80,6 +80,8 @@ def create_calendar(month):
         cell.value = i - 1
     wb.save('calendar.xlsx')
     print "Done.  Created new sheet for " + month
+    with open("log.txt", "a") as text_file:
+        text_file.write("Done.  Created new sheet for %s \n" % month)
 
 # Add info from parsed invoice, single data obj, to calendar
 def add_site(wb, sheet, site):
@@ -94,6 +96,8 @@ def add_site(wb, sheet, site):
 
             cell.value = site
             print 'Adding %s to %s' % (site, sheet.title)
+            with open("log.txt", "a") as text_file:
+                text_file.write('Adding %s to %s \n' % (site, sheet.title))
             wb.save('calendar.xlsx')
             return i
 
@@ -150,6 +154,8 @@ def add_to_calendar(site, obj, invoice_num, color):
         if cell.value:
             if initials in cell.value:
                 print 'ERROR: %s already submmited for %s %s at %s!' % (therapist, month, day, site)
+                with open("log.txt", "a") as text_file:
+                    text_file.write('ERROR: %s already submmited for %s %s at %s! \n' % (therapist, month, day, site))
                 error.append((therapist, month, day, site))
                 return
 
@@ -168,15 +174,26 @@ def add_to_calendar(site, obj, invoice_num, color):
         #     return
         wb.save('calendar.xlsx')
         print "Added %s %s" % (da.strftime("%B %d"), initials)
+        with open("log.txt", "a") as text_file:
+            text_file.write("Added %s %s \n" % (da.strftime("%B %d"), initials))
+
 
 
 def add_invoice(document_name):
+    invoice_num = get_invoice_number(document_name)
+
+    print "Starting %s" % invoice_num
+    with open("log.txt", "a") as text_file:
+        text_file.write("\n%s \nStarting %s \n" % (datetime.datetime.now(), invoice_num))
+
     modality = document_name[-7:-5]
     color = colors[modality]
-    invoice_num = get_invoice_number(document_name)
+
     invoice_data = get_values(document_name)
     sites = invoice_data.keys()
     for site in sites:
         site_obj = invoice_data[site]
         add_to_calendar(site, site_obj, invoice_num, color)
     print "Finished with %s" % invoice_num
+    with open("log.txt", "a") as text_file:
+        text_file.write("Finished with %s \n%s \n \n" % (invoice_num, datetime.datetime.now()))
