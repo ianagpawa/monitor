@@ -6,20 +6,23 @@ import os
 # import pkg_resources
 # print pkg_resources.get_distribution("openpyxl").version
 
-# def execute():
-#     current = os.getcwd()
-#     # Windows file system \
-#     invoices_folder = current + "\Invoices"
-#     os.chdir(invoices_folder)
-#     file_names = os.listdir(os.getcwd())
-#     for f in file_names:
-#         if f != "Done" and f != "Not Done":
-#             f_path = f
-#             add_invoice(f_path)
-#
-# execute()
+def execute():
+    current = os.getcwd()
+    # Windows file system \
+    invoices_folder = current + "\Invoices\\"
+
+    file_names = os.listdir(invoices_folder)
+    for f in file_names:
+        if f != "Done" and f != "Not Done":
+            f_path = f
+            # print f_path
+            add_invoice(invoices_folder+f_path)
+        # print f
+execute()
 
 
 
-add_invoice('Invoice 20170710 - OT.xlsx')
-# add_invoice('Invoice 20170428 - OT.xlsx')
+# add_invoice('Invoice 20170710 - OT.xlsx')
+# add_invoice('Invoice 20170714A - Psy.xlsx')
+# print find_start('Invoice 20170710C - OT.xlsx')
+# print "Invoice 20170714A - Psy.xlsx".split(" ")

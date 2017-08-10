@@ -14,7 +14,7 @@ def find_start(document_name):
         value = cell.internal_value
         if value == 1:
             start = i
-        if value == None and i > 2:
+        if ("Number" in str(value)) and i > 1:
             last = i - 1
             print "Finished getting start and last rows"
             return start, last
@@ -161,13 +161,13 @@ def add_to_calendar(site, obj, invoice_num, color):
 
             else:
                 cell.value += " and " + ("%s-%s" % (invoice_num, initials))
-                font = Font(color=color)
-                cell.font = font
                 cell.font = Font(color=color)
 
         else:
+            cell.font = Font(color='FFFFFF')
             cell.value = "%s-%s" % (invoice_num, initials)
             cell.fill = color_fill
+
 
 
         # if error:
@@ -186,7 +186,7 @@ def add_invoice(document_name):
     with open("log.txt", "a") as text_file:
         text_file.write("\n%s \nStarting %s \n" % (datetime.datetime.now(), invoice_num))
 
-    modality = document_name[-7:-5]
+    modality = document_name[-8:-5].strip()
     color = colors[modality]
 
     invoice_data = get_values(document_name)
