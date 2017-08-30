@@ -156,12 +156,17 @@ def add_to_calendar(site, obj, invoice_num, color):
                 print 'ERROR: %s already submmited for %s %s at %s!' % (therapist, month, day, site)
                 with open("log.txt", "a") as text_file:
                     text_file.write('ERROR: %s already submmited for %s %s at %s! \n' % (therapist, month, day, site))
+                with open("doubles.txt", "a") as doubles_text:
+                    doubles_text.write('ERROR: %s already submmited for %s %s at %s! \n' % (therapist, month, day, site))
                 error.append((therapist, month, day, site))
                 return
 
             else:
+
                 cell.value += " and " + ("%s-%s" % (invoice_num, initials))
                 cell.font = Font(color=color)
+                with open("same_day.txt", "a") as same_day:
+                    same_day.write('%s and another therapist submitted for the same day, %s %s at %s \n' % (therapist, month, day, site))
 
         else:
             cell.font = Font(color='FFFFFF')
