@@ -8,8 +8,10 @@
 
 
 #### Dependencies
-These script use `python` and the module `openpyxl` to read and write Excel files.  Install the module with command (`python` and `pip` need to be installed on your system):
+These scripts use `python` and the module `openpyxl` to read and write Excel files.  Linux systems typically come with `python` installed; to check the version and whether it is installed use command `python --version`.  Install `pip` and use it to install the `openpyxl` module.
 ```
+$   sudo apt-get install python-pip
+$   pip install --upgrade pip
 $   pip install openpyxl
 ```
 
