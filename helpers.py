@@ -108,26 +108,14 @@ def get_initials(name):
         finished += name[0]
     return finished
 
-# therapist_colors = {
-#     "SK": "E7C80E",
-#     "IM": "E7C80E",
-#     "BR": "E7C80E",
-#     "IR": "E7C80E",
-#     "MJ": "004C00",
-#     "GK": "004C00",
-#     "DS": "004C00",
-#     "DIO": "660000",
-#     "TK": "660000",
-#     "TP": "660000",
-#     "WS": "660000",
-#     "AV": "660000"
-# }
 
 colors = {
     "OT": "E7C80E",
     "SP": "004C00",
     "Psy": "660000"
 }
+
+
 def add_to_calendar(site, obj, invoice_num, color):
     dates = obj['date']
     therapist = obj['therapist']
