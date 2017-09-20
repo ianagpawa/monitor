@@ -54,10 +54,6 @@ def get_values(document_name):
         else:
             data[site] = {"therapist": therapist, "date": [date]}
     return data
-    # results = open('test.py', 'w')
-    # results.write('allData = ' + pprint.pformat(data))
-    # results.close()
-    # print ("Done.")
 
 
 # Create new calander sheet
@@ -161,10 +157,6 @@ def add_to_calendar(site, obj, invoice_num, color):
             cell.value = "%s-%s" % (invoice_num, initials)
             cell.fill = color_fill
 
-
-
-        # if error:
-        #     return
         wb.save('calendar.xlsx')
         print "Added %s %s" % (da.strftime("%B %d"), initials)
         with open("log.txt", "a") as text_file:

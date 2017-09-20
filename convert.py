@@ -1,5 +1,3 @@
-#   Reading Excel
-import openpyxl
 from helpers import add_invoice as add_invoice
 
 import os
@@ -11,7 +9,7 @@ def execute():
     # Windows file system \
     invoices_folder = current + "\Invoices\\"
     # Linux file system
-    # invoices_folder = current + "/Invoices/"
+    invoices_folder = current + "/Invoices/"
     file_names = os.listdir(invoices_folder)
     for file_path in file_names:
         if file_path != "Done" and file_path != "Not Done":
