@@ -11,8 +11,8 @@
 These scripts use `python` and the module `openpyxl` to read and write Excel files.  Linux systems typically come with `python` installed; to check the version and whether it is installed use command `python --version`.  Install `pip` and use it to install the `openpyxl` module.
 ```
 $   sudo apt-get install python-pip
-$   pip install --upgrade pip
-$   pip install openpyxl
+$   sudo pip install --upgrade pip
+$   sudo pip install openpyxl
 ```
 
 
