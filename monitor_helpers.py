@@ -11,21 +11,21 @@ def check_calendar():
 def check_month(worksheet):
     i = 3
     cell = worksheet.cell(row=i, column=1)
-    while worksheet.cell(row=i, column=1).value != None:
-        #   Add checking method here
-        print worksheet.cell(row=i, column=1).value
-        i += 1
+    for row in worksheet.iter_rows(min_row=2, max_col=32, max_row=40):
+        if row[0].value:
+            print row[0].value
+    # while worksheet.cell(row=i, column=1).value != None:
+    #     #   Add checking method here
+    #     print worksheet.cell(row=i, column=1).value
+    #     i += 1
 
 
-def check_site(worksheet, row_number):
-    site = worksheet.cell(row=row_number, column=1)
-    i = 2
-    while i <= 32:
-        pass
+def check_site(row):
+    site = row
 
 
 
 
-# wb = openpyxl.load_workbook('calendar.xlsx')
-# sheet = wb['June']
-# check_month(sheet)
+wb = openpyxl.load_workbook('calendar.xlsx')
+sheet = wb['June']
+check_month(sheet)
