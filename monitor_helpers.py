@@ -13,15 +13,15 @@ def check_month(worksheet):
     cell = worksheet.cell(row=i, column=1)
     for row in worksheet.iter_rows(min_row=2, max_col=32, max_row=40):
         if row[0].value:
-            print row[0].value
-    # while worksheet.cell(row=i, column=1).value != None:
-    #     #   Add checking method here
-    #     print worksheet.cell(row=i, column=1).value
-    #     i += 1
+            check_site(row)
+
 
 
 def check_site(row):
-    site = row
+    site = row[0]
+    for cell in row[2:]:
+        if cell.value:
+            print cell.coordinate, cell.value
 
 
 
