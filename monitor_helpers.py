@@ -21,8 +21,9 @@ def check_site(row):
     site = row[0]
     for cell in row[2:]:
         if cell.value:
-            print cell.coordinate, cell.value
-
+            # print cell.coordinate, cell.value
+            background_color = cell.fill.fgColor.index[2:]
+            print background_color
 
 
 
