@@ -1,6 +1,13 @@
 import openpyxl
 import os
 
+colors = {
+    "E7C80E": "OT",
+    "004C00": "SP",
+    "660000": "Psy"
+}
+
+
 def check_calendar():
     wb = openpyxl.load_workbook('calendar.xlsx')
     print 'Opening calendar'
@@ -22,10 +29,17 @@ def check_site(row):
     for cell in row[2:]:
         if cell.value:
             # print cell.coordinate, cell.value
-            background_color = cell.fill.fgColor.index[2:]
-            print background_color
+            initials, modality = get_values(cell)
+            print initials, modality
 
 
+def get_values(cell):
+    background_color = cell.fill.fgColor.index[2:]
+    modality = colors[background_color]
+
+    initials = cell.value.split("-")[1]
+
+    return initials, modality
 
 wb = openpyxl.load_workbook('calendar.xlsx')
 sheet = wb['June']

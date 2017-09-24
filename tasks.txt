@@ -1,0 +1,3 @@
+map to calendar by week
+
+map submission day of week, verify schedule
